@@ -1,0 +1,34 @@
+@startuml
+class Account {
+  - accountId: int
+  - ownerName: String
+  - balance: BigDecimal
+  + getBalance(): BigDecimal
+  + withdraw(amount): void
+  + deposit(amount): void
+}
+class SavingsAccount
+class CurrentAccount
+Account <|-- SavingsAccount
+Account <|-- CurrentAccount
+
+class AccountDAO {
+  + findById(id): Account
+  + withdraw(id, amount): void
+  + deposit(id, amount): void
+  + transfer(from, to, amount): void
+}
+
+class ATMGui {
+  - dao: AccountDAO
+  - cache: InMemoryCache
+  + main(args): void
+}
+
+class TransactionWorker
+class InMemoryCache
+AccountDAO --> TransactionWorker : uses
+ATMGui --> AccountDAO : uses
+ATMGui --> InMemoryCache : uses
+TransactionWorker --> AccountDAO : uses
+@enduml
